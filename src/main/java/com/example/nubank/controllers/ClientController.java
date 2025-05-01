@@ -16,9 +16,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.nubank.dto.ClientDTO;
+import com.example.nubank.dto.ClientResponseDTO;
+import com.example.nubank.dto.ContactDTO;
 import com.example.nubank.models.Client;
+import com.example.nubank.models.Contact;
 import com.example.nubank.repository.ClientRepository;
 import com.example.nubank.services.ClientService;
+import com.example.nubank.services.ContactService;
 
 @RestController
 @RequestMapping("/clients")
@@ -26,6 +30,9 @@ public class ClientController {
 
   @Autowired
   private ClientService clientService;
+
+  @Autowired
+  private ContactService contactService;
 
   @Autowired
   private ClientRepository clientRepository;
@@ -37,9 +44,22 @@ public class ClientController {
   }
 
   @PostMapping
-  public ResponseEntity<Client> insertClient(@RequestBody ClientDTO clientDTO) {
+  public ResponseEntity<ClientResponseDTO> insertClient(@RequestBody ClientDTO clientDTO) {
     Client client = clientService.insertClient(clientDTO);
-    return ResponseEntity.status(HttpStatus.CREATED).body(client);
+
+    ClientResponseDTO dto = new ClientResponseDTO();
+
+    dto.setId(client.getId());
+    dto.setUsername(client.getUsername());
+    dto.setEmail(client.getEmail());
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+  }
+
+  @PostMapping("/{clientId}/contacts")
+  public ResponseEntity<Contact> addContactToClient(@PathVariable Long clientId, @RequestBody ContactDTO contactDTO) {
+    Contact savedContact = contactService.insertContact(contactDTO, clientId);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedContact);
   }
 
   @DeleteMapping("/{id}")

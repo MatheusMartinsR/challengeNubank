@@ -18,6 +18,14 @@ public class ClientService {
 
   public Client insertClient(ClientDTO clientDTO) {
 
+    if (clientRepository.existsByUsername(clientDTO.getUsername())) {
+      throw new RuntimeException("User alredy exists!");
+    }
+
+    if (clientRepository.existsByEmail(clientDTO.getEmail())) {
+      throw new RuntimeException("User with this email alredy exists!");
+    }
+
     Client client = new Client();
     client.setUsername(clientDTO.getUsername());
     client.setEmail(clientDTO.getEmail());
@@ -43,7 +51,7 @@ public class ClientService {
     if (clientRepository.existsById(id)) {
       clientRepository.deleteById(id);
     } else {
-      throw new RuntimeException("client with this id not founded" + id);
+      throw new RuntimeException("client with this id not founded \n " + "id: " + id);
     }
   }
 

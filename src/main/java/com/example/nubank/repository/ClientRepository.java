@@ -8,4 +8,8 @@ import com.example.nubank.models.Client;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
+  boolean existsByUsername(String username);
+
+  boolean existsByEmail(String email);
+
 }
