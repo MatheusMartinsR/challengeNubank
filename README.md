@@ -20,7 +20,7 @@ API REST desenvolvida para estudo, com o objetivo de gerenciar **clientes** e se
   `GET /clients/{id}`
 
 - [x] **Documentação interativa com Swagger**  
-  Acesse em: `/swagger-ui/index.html`
+ `/swagger-ui/index.html`
 
 ---
 
